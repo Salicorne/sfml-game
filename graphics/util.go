@@ -1,8 +1,19 @@
 package graphics
 
 import (
+	"time"
+
 	sfml "github.com/telroshan/go-sfml/v2/graphics"
 )
+
+type Drawable interface {
+	Draw(sfml.Struct_SS_sfRenderWindow)
+	Destroy()
+}
+
+type Animable interface {
+	Animate(elapsed time.Duration)
+}
 
 type Vec2 struct {
 	X float32
