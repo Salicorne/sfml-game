@@ -15,6 +15,7 @@ type BasicSprite struct {
 	sfml_sprite *sfml.Struct_SS_sfSprite
 	sfml_rect   *sfml.Struct_SS_sfRectangleShape
 	name        string
+	feetPos     Vec2 // feet delta
 	abspos      Vec2
 	nextabspos  Vec2
 	textureRect Rect
@@ -29,7 +30,7 @@ func (s *BasicSprite) Draw(w sfml.Struct_SS_sfRenderWindow, winpos Vec2) {
 		s.currectRect = s.nextRect
 		sfml.SfSprite_setTextureRect(s.GetSfSprite(), s.currectRect.ToSFMLIntRect())
 	}
-	sfml.SfSprite_setPosition(*s.sfml_sprite, Vec2{X: s.abspos.X - winpos.X, Y: s.abspos.Y - winpos.Y}.ToSFMLVector2f())
+	sfml.SfSprite_setPosition(*s.sfml_sprite, Vec2{X: s.abspos.X - winpos.X - s.feetPos.X, Y: s.abspos.Y - winpos.Y - s.feetPos.Y}.ToSFMLVector2f())
 	sfml.SfRectangleShape_setPosition(*s.sfml_rect, Vec2{X: s.abspos.X - winpos.X, Y: s.abspos.Y - winpos.Y}.ToSFMLVector2f())
 
 	sfml.SfRenderWindow_drawSprite(w, *s.sfml_sprite, (sfml.SfRenderStates)(sfml.SwigcptrSfRenderStates(0)))

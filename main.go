@@ -92,7 +92,7 @@ func main() {
 		{Rect: Rect{X: 48 * 6, Y: 0, W: 48, H: 48}, Duration: time.Millisecond * 100},
 		{Rect: Rect{X: 48 * 7, Y: 0, W: 48, H: 48}, Duration: time.Millisecond * 100},
 	}
-	if _, err := sprmgr.LoadAnimatedSprite("explosionspr", "explosion", PlaybackMode_LOOP, map[AnimationType]graphics.Animation{AnimationType_IDLES: explosionIdleFrames}, AnimationType_IDLES, Vec2{X: 350, Y: 150}); err != nil {
+	if _, err := sprmgr.LoadAnimatedSprite("explosionspr", "explosion", PlaybackMode_LOOP, map[AnimationType]graphics.Animation{AnimationType_IDLES: explosionIdleFrames}, AnimationType_IDLES, Vec2{24, 40}, Vec2{X: 350, Y: 150}); err != nil {
 		fmt.Printf("[FATAL] Error loading sprite %s: %s", "explosionspr", err)
 		os.Exit(1)
 	}
@@ -153,7 +153,7 @@ func main() {
 		AnimationType_WALKE: lpcWalkEFrames,
 	}
 
-	playersprite, err := sprmgr.LoadAnimatedSprite("playerspr", "lpc", PlaybackMode_LOOP, lpcAnimations, AnimationType_IDLES, Vec2{X: 250, Y: 150})
+	playersprite, err := sprmgr.LoadAnimatedSprite("playerspr", "lpc", PlaybackMode_LOOP, lpcAnimations, AnimationType_IDLES, Vec2{32, 55}, Vec2{X: 250, Y: 150})
 	if err != nil {
 		fmt.Printf("[FATAL] Error loading player sprite %s", err)
 		os.Exit(1)

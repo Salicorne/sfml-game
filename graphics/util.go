@@ -10,6 +10,7 @@ import (
 type Drawable interface {
 	Draw(sfml.Struct_SS_sfRenderWindow, Vec2)
 	SetAbsPos(Vec2)
+	GetAbsPos() Vec2
 	Destroy()
 }
 
