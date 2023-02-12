@@ -5,7 +5,7 @@ import (
 	"sort"
 	"time"
 
-	. "sfml-test/common"
+	. "github.com/Salicorne/sfml-game/common"
 
 	sfml "github.com/telroshan/go-sfml/v2/graphics"
 )

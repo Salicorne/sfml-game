@@ -1,8 +1,9 @@
 package graphics
 
 import (
-	. "sfml-test/common"
 	"time"
+
+	. "github.com/Salicorne/sfml-game/common"
 
 	sfml "github.com/telroshan/go-sfml/v2/graphics"
 )

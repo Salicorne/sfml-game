@@ -2,7 +2,8 @@ package engine
 
 import (
 	"math"
-	. "sfml-test/common"
+
+	. "github.com/Salicorne/sfml-game/common"
 
 	sfmlwindow "github.com/telroshan/go-sfml/v2/window"
 )

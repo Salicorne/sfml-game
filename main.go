@@ -4,13 +4,14 @@ import (
 	"fmt"
 	"os"
 	"runtime"
-	"sfml-test/engine"
-	"sfml-test/game"
-	"sfml-test/graphics"
 	"sync"
 	"time"
 
-	. "sfml-test/common"
+	"github.com/Salicorne/sfml-game/engine"
+	"github.com/Salicorne/sfml-game/game"
+	"github.com/Salicorne/sfml-game/graphics"
+
+	. "github.com/Salicorne/sfml-game/common"
 
 	sfmlgraphics "github.com/telroshan/go-sfml/v2/graphics"
 	sfmlwindow "github.com/telroshan/go-sfml/v2/window"
@@ -77,10 +78,10 @@ func main() {
 	sprmgr := graphics.NewSpriteManager(txtrmgr)
 	defer sprmgr.Cleanup()
 
-	/*if _, err := sprmgr.LoadBasicSprite("explosionspr_static", "explosion", Rect{X: 0, Y: 0, W: 48, H: 48}, Vec2{X: 50, Y: 20}); err != nil {
+	if _, err := sprmgr.LoadBasicSprite("explosionspr_static", "explosion", Rect{X: 48 * 4, Y: 0, W: 48, H: 48}, Vec2{}, Vec2{X: 50, Y: 20}); err != nil {
 		fmt.Printf("[FATAL] Error loading sprite %s: %s", "explosionspr", err)
 		os.Exit(1)
-	}*/
+	}
 
 	explosionIdleFrames := []graphics.AnimatedSpriteFrame{
 		{Rect: Rect{X: 48 * 0, Y: 0, W: 48, H: 48}, Duration: time.Millisecond * 100},

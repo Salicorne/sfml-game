@@ -1,8 +1,8 @@
 package game
 
 import (
-	. "sfml-test/common"
-	"sfml-test/graphics"
+	. "github.com/Salicorne/sfml-game/common"
+	"github.com/Salicorne/sfml-game/graphics"
 )
 
 type GameManager struct {

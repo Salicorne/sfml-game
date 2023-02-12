@@ -1,4 +1,4 @@
-module sfml-test
+module github.com/Salicorne/sfml-game
 
 go 1.20
 
