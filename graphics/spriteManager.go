@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"time"
 
+	. "sfml-test/common"
+
 	sfml "github.com/telroshan/go-sfml/v2/graphics"
 )
 
@@ -13,16 +15,16 @@ type SpriteManager struct {
 	animables []Animable
 }
 
-func NexSpriteManager(txtrmgr TextureManager) SpriteManager {
+func NewSpriteManager(txtrmgr TextureManager) SpriteManager {
 	return SpriteManager{
 		txtrmgr: txtrmgr,
 		sprites: []Drawable{},
 	}
 }
 
-func (s *SpriteManager) Draw(w sfml.Struct_SS_sfRenderWindow) {
+func (s *SpriteManager) Draw(w sfml.Struct_SS_sfRenderWindow, winpos Vec2) {
 	for i := range s.sprites {
-		s.sprites[i].Draw(w)
+		s.sprites[i].Draw(w, winpos)
 	}
 }
 
@@ -32,40 +34,52 @@ func (s *SpriteManager) Animate(elapsed time.Duration) {
 	}
 }
 
-func (s *SpriteManager) LoadBasicSprite(spriteName, textureName string, textureRect Rect) error {
+func (s *SpriteManager) LoadBasicSprite(spriteName, textureName string, textureRect Rect, initialPos Vec2) (*BasicSprite, error) {
 	txtr, err := s.txtrmgr.GetSfTexture(textureName)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	spr := sfml.SfSprite_create()
 	sfml.SfSprite_setTexture(spr, *txtr, 1)
 
 	sfml.SfSprite_setTextureRect(spr, textureRect.ToSFMLIntRect())
 
-	s.sprites = append(s.sprites, BasicSprite{sfml_sprite: &spr, name: spriteName, abspos: Vec2{0, 0}})
+	rect := sfml.SfRectangleShape_create()
+	sfml.SfRectangleShape_setSize(rect, Vec2{X: 6, Y: 6}.ToSFMLVector2f())
+	sfml.SfRectangleShape_setFillColor(rect, sfml.GetSfBlue())
 
-	return nil
+	sprite := &BasicSprite{sfml_sprite: &spr, name: spriteName, abspos: initialPos, sfml_rect: &rect}
+	s.sprites = append(s.sprites, sprite)
+
+	return sprite, nil
 }
 
-func (s *SpriteManager) LoadAnimatedSprite(spriteName, textureName string, playbackMode PlaybackMode, frames []AnimatedSpriteFrame) error {
-	if len(frames) == 0 {
-		return fmt.Errorf("Animated sprites must have at least one frame")
+func (s *SpriteManager) LoadAnimatedSprite(spriteName, textureName string, playbackMode PlaybackMode, animations map[AnimationType]Animation, initialAnimation AnimationType, initialPos Vec2) (*AnimatedSprite, error) {
+	if len(animations) == 0 {
+		return nil, fmt.Errorf("Animated sprites must have at least one animation")
+	}
+	if _, ok := animations[initialAnimation]; !ok {
+		return nil, fmt.Errorf("Actor loaded without its initial animations")
 	}
 
 	txtr, err := s.txtrmgr.GetSfTexture(textureName)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	spr := sfml.SfSprite_create()
 	sfml.SfSprite_setTexture(spr, *txtr, 1)
 
-	sfml.SfSprite_setTextureRect(spr, frames[0].Rect.ToSFMLIntRect())
+	sfml.SfSprite_setTextureRect(spr, animations[initialAnimation][0].Rect.ToSFMLIntRect())
 
-	sprite := AnimatedSprite{BasicSprite: BasicSprite{sfml_sprite: &spr, name: spriteName, abspos: Vec2{0, 0}}, frames: frames, playbackMode: playbackMode}
+	rect := sfml.SfRectangleShape_create()
+	sfml.SfRectangleShape_setSize(rect, Vec2{X: 6, Y: 6}.ToSFMLVector2f())
+	sfml.SfRectangleShape_setFillColor(rect, sfml.GetSfGreen())
+
+	sprite := AnimatedSprite{BasicSprite: BasicSprite{sfml_sprite: &spr, sfml_rect: &rect, name: spriteName, abspos: initialPos, nextabspos: initialPos}, animations: animations, playbackMode: playbackMode, currentAnimation: initialAnimation, nextAnimation: initialAnimation, currentFrame: 0}
 	s.sprites = append(s.sprites, &sprite)
 	s.animables = append(s.animables, &sprite)
 
-	return nil
+	return &sprite, nil
 }
 
 func (s *SpriteManager) Cleanup() {

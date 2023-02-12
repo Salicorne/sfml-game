@@ -1,1 +1,2 @@
 explosion_48.png https://opengameart.org/content/explosion-48px-96px-and-vector-version
+BODY_male.png https://opengameart.org/content/lpc-medieval-fantasy-character-sprites
